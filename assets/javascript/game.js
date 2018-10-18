@@ -1,22 +1,23 @@
-    var QuestionCount = 2;
-    var MaxGuesses = 10;
-    var GuessesCount = 0;
-    var LetterGuesses = "";
+    
+    var maxGuesses = 10;
+    var guessesCount = 0;
+    var letterGuesses = "";
     var Wins = 0;
     var Losses = 0;
-    var GuessesSoFar ="";
-    var GuessesLeft = MaxGuesses;
-    var statusmsg;
-    var CurrentQuestion;
-    var CurrentAnswer;
-    var CurrentAnswerMasked;
-    var CurrentAnswerMaskedDisplay;
-    var UnknownLetter = "_";
-    var bFirstMatch = false;
-    var NumTries = 1;
-    var MaxNumTries = 5;
+    var guessesSoFar ="";
+    var guessesLeft = maxGuesses;
+    var statusMsg;
+    var answerMsg;
+    var currentQuestion;
+    var currentAnswer;
+    var currentAnswerMasked;
+    var currentAnswerMaskedDisplay;
+    var unknownLetter = "_";
+    var numTries = 1;
+    var maxQuestions = 5;
     
- 
+    var LettersAllowed = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
+  ]
     var Questions = {
         "Q1": "In The Karate Kid what color did Daniel have to paint Miagi's house, as part of his training?",
         "A1": "Green",
@@ -30,94 +31,114 @@
         "A5": "Vodka"
         }
 
- 
+        function resetgame(){
+          statusMsg ="Sorry there are no more questions. Thank you for playing.  Press any key to try again."
+          resetColor();
+          resetQuestion();
+          document.getElementById("game").textContent = statusMsg;
+          document.getElementById("answerMsg").textContent = "-";
+          document.getElementById("guessesSoFar").textContent = "Guesses So Far: ";
+          document.getElementById("guessesLeft").textContent = "Guesses Left: " ;
+          document.getElementById("Losses").textContent = "Losses: 0" ;
+          document.getElementById("Wins").textContent = "Wins: 0";
+          numTries =1;
+        }
+
+        function resetColor(){
+          document.getElementById("game").classList.remove("game-red");
+          document.getElementById("game").classList.remove("game-green");
+        }
+        
+        function resetQuestion(){
+          guessesCount = 0;
+          letterGuesses = "";
+          guessesLeft = maxGuesses;
+          guessesSoFar = "";
+
+        }
       
     // This function is run whenever the user presses a key.
     document.onkeyup = function(event) {
-     
-      // if ((typeof y) === "string") {
-      //           console.log ("y is a string");
-      //       }
-      if (NumTries > MaxNumTries) {
-            statusmsg ="Sorry there are no more questions. Thank you for playing."
-            GuessesLeft = 0;
-       document.getElementById("GuessesLeft").textContent = "Guesses Left: " + GuessesLeft ;
-       document.getElementById("game").textContent = statusmsg;
-            return;
-        }
 
-
-
-    if (GuessesCount === 0) {
+    
       
-       switch(NumTries){
+      //Sets the user's guess to upper case.
+      var userGuess = event.key.toUpperCase();
+
+    /*Checks if the user's guess is in the array of letters allowed.  If it is, then proceed.
+    if not, don't do anything and wait another user guess*/
+    if (LettersAllowed.indexOf(userGuess)>-1)
+
+    {
+   
+
+     if (guessesCount === 0) {
+      resetColor();
+       switch(numTries){
         case 1:
-          CurrentQuestion = Questions.Q1;
-          CurrentAnswerMasked = UnknownLetter.repeat(Questions.A1.length).toUpperCase();
-          CurrentAnswer = Questions.A1.toUpperCase();
+          currentQuestion = Questions.Q1;
+          currentAnswerMasked = unknownLetter.repeat(Questions.A1.length).toUpperCase();
+          currentAnswer = Questions.A1.toUpperCase();
         break;
         case 2:
-          CurrentQuestion = Questions.Q2;
-          CurrentAnswerMasked = UnknownLetter.repeat(Questions.A2.length).toUpperCase();
-          CurrentAnswer = Questions.A2.toUpperCase();
+          currentQuestion = Questions.Q2;
+          currentAnswerMasked = unknownLetter.repeat(Questions.A2.length).toUpperCase();
+          currentAnswer = Questions.A2.toUpperCase();
           
         break;
         case 3:
-        CurrentQuestion = Questions.Q3;
-          CurrentAnswerMasked = UnknownLetter.repeat(Questions.A3.length).toUpperCase();
-          CurrentAnswer = Questions.A3.toUpperCase();
+        currentQuestion = Questions.Q3;
+          currentAnswerMasked = unknownLetter.repeat(Questions.A3.length).toUpperCase();
+          currentAnswer = Questions.A3.toUpperCase();
          
         break;
         case 4:
-        CurrentQuestion = Questions.Q4;
-          CurrentAnswerMasked = UnknownLetter.repeat(Questions.A4.length).toUpperCase();
-          CurrentAnswer = Questions.A4.toUpperCase();
+        currentQuestion = Questions.Q4;
+          currentAnswerMasked = unknownLetter.repeat(Questions.A4.length).toUpperCase();
+          currentAnswer = Questions.A4.toUpperCase();
      
         break;
         case 5:
-        CurrentQuestion = Questions.Q5;
-          CurrentAnswerMasked = UnknownLetter.repeat(Questions.A5.length).toUpperCase();
-          CurrentAnswer = Questions.A5.toUpperCase();
+        currentQuestion = Questions.Q5;
+          currentAnswerMasked = unknownLetter.repeat(Questions.A5.length).toUpperCase();
+          currentAnswer = Questions.A5.toUpperCase();
 
         break;
        }
 
-     statusmsg = "Question: " + CurrentQuestion;
-  statusmsg += CurrentAnswerMasked;
+     statusMsg = "Question: " + currentQuestion;
+    answerMsg = currentAnswerMasked;
 
       }
-     else if (GuessesCount > 0){
-        var userGuess = event.key.toUpperCase();
-        GuessesLeft = MaxGuesses-GuessesCount;
-       GuessesSoFar += userGuess + " ";
+     else if (guessesCount > 0){
+        
+        guessesLeft = maxGuesses-guessesCount;
+       guessesSoFar += userGuess + " ";
           
 
           
 
-for (var i = 0; i < CurrentAnswer.length; i++) {
+for (var i = 0; i < currentAnswer.length; i++) {
 
                  //if found
-        if (CurrentAnswer[i].indexOf(userGuess) === 0){
+        if (currentAnswer[i].indexOf(userGuess) === 0){
             //if first letter in loop
             if (i === 0) {
-              CurrentAnswerMaskedDisplay = CurrentAnswer[i];
-              
-             
+              currentAnswerMaskedDisplay = currentAnswer[i];
             }
             else{
-              CurrentAnswerMaskedDisplay += CurrentAnswer[i];
-              
+              currentAnswerMaskedDisplay += currentAnswer[i];
             }
         
           }
 
          else{
             if (i === 0) {
-              CurrentAnswerMaskedDisplay = CurrentAnswerMasked[i];
+              currentAnswerMaskedDisplay = currentAnswerMasked[i];
          
               }
               else{
-                CurrentAnswerMaskedDisplay += CurrentAnswerMasked[i];
+                currentAnswerMaskedDisplay += currentAnswerMasked[i];
                
               }
          
@@ -128,52 +149,44 @@ for (var i = 0; i < CurrentAnswer.length; i++) {
        
       } // close for loop
 
-
-
-
-         CurrentAnswerMasked = CurrentAnswerMaskedDisplay;
+      currentAnswerMasked = currentAnswerMaskedDisplay;
       
-      statusmsg = "Question: " + CurrentQuestion;
-      statusmsg += CurrentAnswerMasked;
-
-       
-
-      
+      statusMsg = "Question: " + currentQuestion;
+      answerMsg =  currentAnswerMasked;
       }
 
 
-     GuessesCount += 1;
+     guessesCount ++;
 
-            if (CurrentAnswer === CurrentAnswerMasked){
-            Wins +=1;
-            GuessesCount = 0;
-            LetterGuesses = "";
-            GuessesLeft = MaxGuesses;
-            NumTries +=1;
-            GuessesSoFar = "";
-            statusmsg = "You WON that round! :) The answer was: " + CurrentAnswer + ". Press any key for the next question.";
-            
+            if (currentAnswer === currentAnswerMasked){
+            Wins ++;
+            numTries ++;
+            statusMsg = "You WON that round! :) The answer was: " + currentAnswer + ". Press any key for the next question.";
+            document.getElementById("game").classList.add("game-green");
+            resetQuestion();     
           }
-          else if (GuessesLeft === 0){
-            Losses +=1;
-            GuessesCount = 0;
-            LetterGuesses = "";
-            GuessesLeft = MaxGuesses;
-            NumTries +=1;
-            GuessesSoFar = "";
-            statusmsg = "You lost that round... :( Press any key for the next question.";
-            
+          else if (guessesLeft === 0){
+            Losses ++;
+            numTries ++;
+            statusMsg = "You lost that round... :( Press any key for the next question.";
+            document.getElementById("game").classList.add("game-red");
+            resetQuestion();
           }
 
        
 
-    document.getElementById("game").textContent = statusmsg;
-    document.getElementById("GuessesSoFar").textContent = "Guesses So Far: " + GuessesSoFar;
-       document.getElementById("GuessesLeft").textContent = "Guesses Left: " + GuessesLeft ;
-       document.getElementById("Losses").textContent = "Losses: " + Losses ;
-       document.getElementById("Wins").textContent = "Wins: " + Wins ;
+    document.getElementById("game").textContent = statusMsg;
+    document.getElementById("answerMsg").textContent = answerMsg;
+    document.getElementById("guessesSoFar").textContent = "Guesses So Far: " + guessesSoFar;
+    document.getElementById("guessesLeft").textContent = "Guesses Left: " + guessesLeft ;
+    document.getElementById("Losses").textContent = "Losses: " + Losses ;
+    document.getElementById("Wins").textContent = "Wins: " + Wins ;
 
-       
+         /*If the number of tries is greater than the number of questions, reset the game by 
+      executing the resetgame function*/
+      if (numTries > maxQuestions) {
+        resetgame();
+    }
     
-    };
- 
+        } 
+  }
