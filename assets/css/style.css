@@ -1,13 +1,3 @@
-
-
-h1 {
-    margin: 15px 15px 15px 15px;
-    font-family: 'Georgia', Times, 'Times New Roman', serif;
-    font-size: 20px;
-    font-weight: bold;
-
-}
-
 #answerMsg{
     letter-spacing: 25px;
     font-family: 'Georgia', Times, 'Times New Roman', serif;
@@ -29,7 +19,7 @@ h1 {
     margin: 0px 0px 0px 50px;
     padding: 15px 15px 15px 15px; 
     font-family: 'Georgia', Times, 'Times New Roman', serif;
-    font-size: 40px;
+    font-size: 25px;
 }
 
 .game-red{
@@ -59,9 +49,45 @@ h1 {
     padding: 0px 0px 15px 0px; 
 }
 
+ 
+.jumbotron {
+ 
+    background-image: url("../images/2-WordGuess.jpg");
+    background-size: 500px 200px;
+}
 
-body {
-   
+.jumbotronQ1 {
     /* IMPORTANT you are in the CSS folder when the CSS is loaded.  You have to go back to the root directory to access the images folder */
-    /*background-image: url("../images/dust_scratches.png");*/
+    background-image: url("../images/Q1.jpg") ;
+    background-size: 500px 200px;
+    opacity: 1;
+}
+
+
+.jumbotronQ2 {
+    /* IMPORTANT you are in the CSS folder when the CSS is loaded.  You have to go back to the root directory to access the images folder */
+    background-image: url("../images/Q2.jpg") ;
+    background-size: 500px 200px;
+    opacity: 0.3;
+}
+
+.jumbotronQ3 {
+    /* IMPORTANT you are in the CSS folder when the CSS is loaded.  You have to go back to the root directory to access the images folder */
+    background-image: url("../images/Q3.gif") ;
+    background-size: 500px 200px;
+    opacity: 1;
+}
+
+.jumbotronQ4 {
+    /* IMPORTANT you are in the CSS folder when the CSS is loaded.  You have to go back to the root directory to access the images folder */
+    background-image: url("../images/Q4.jpg") ;
+    background-size: 500px 200px;
+    opacity: 1;
+}
+
+.jumbotronQ5 {
+    /* IMPORTANT you are in the CSS folder when the CSS is loaded.  You have to go back to the root directory to access the images folder */
+    background-image: url("../images/Q5.jpg") ;
+    background-size: 400px 200px;
+    opacity: 1;
 }

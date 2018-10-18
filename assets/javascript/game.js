@@ -37,10 +37,12 @@
           resetQuestion();
           document.getElementById("game").textContent = statusMsg;
           document.getElementById("answerMsg").textContent = "-";
-          document.getElementById("guessesSoFar").textContent = "Guesses So Far: ";
+          document.getElementById("guessesSoFar").textContent = "";
           document.getElementById("guessesLeft").textContent = "Guesses Left: " ;
           document.getElementById("Losses").textContent = "Losses: 0" ;
           document.getElementById("Wins").textContent = "Wins: 0";
+          Losses = 0;
+          Wins = 0;
           numTries =1;
         }
 
@@ -54,6 +56,11 @@
           letterGuesses = "";
           guessesLeft = maxGuesses;
           guessesSoFar = "";
+          document.querySelector(".jumbotron").classList.remove("jumbotronQ1");
+          document.querySelector(".jumbotron").classList.remove("jumbotronQ2");
+          document.querySelector(".jumbotron").classList.remove("jumbotronQ3");
+          document.querySelector(".jumbotron").classList.remove("jumbotronQ4");
+          document.querySelector(".jumbotron").classList.remove("jumbotronQ5");
 
         }
       
@@ -79,30 +86,31 @@
           currentQuestion = Questions.Q1;
           currentAnswerMasked = unknownLetter.repeat(Questions.A1.length).toUpperCase();
           currentAnswer = Questions.A1.toUpperCase();
+          document.querySelector(".jumbotron").classList.add("jumbotronQ1");
         break;
         case 2:
           currentQuestion = Questions.Q2;
           currentAnswerMasked = unknownLetter.repeat(Questions.A2.length).toUpperCase();
           currentAnswer = Questions.A2.toUpperCase();
-          
+          document.querySelector(".jumbotron").classList.add("jumbotronQ2");
         break;
         case 3:
         currentQuestion = Questions.Q3;
           currentAnswerMasked = unknownLetter.repeat(Questions.A3.length).toUpperCase();
           currentAnswer = Questions.A3.toUpperCase();
-         
+          document.querySelector(".jumbotron").classList.add("jumbotronQ3");
         break;
         case 4:
         currentQuestion = Questions.Q4;
           currentAnswerMasked = unknownLetter.repeat(Questions.A4.length).toUpperCase();
           currentAnswer = Questions.A4.toUpperCase();
-     
+          document.querySelector(".jumbotron").classList.add("jumbotronQ4");
         break;
         case 5:
         currentQuestion = Questions.Q5;
           currentAnswerMasked = unknownLetter.repeat(Questions.A5.length).toUpperCase();
           currentAnswer = Questions.A5.toUpperCase();
-
+          document.querySelector(".jumbotron").classList.add("jumbotronQ5");
         break;
        }
 
@@ -162,14 +170,15 @@ for (var i = 0; i < currentAnswer.length; i++) {
             Wins ++;
             numTries ++;
             statusMsg = "You WON that round! :) The answer was: " + currentAnswer + ". Press any key for the next question.";
-            document.getElementById("game").classList.add("game-green");
+            document.querySelector("#game").classList.add("game-green");
+            
             resetQuestion();     
           }
           else if (guessesLeft === 0){
             Losses ++;
             numTries ++;
             statusMsg = "You lost that round... :( Press any key for the next question.";
-            document.getElementById("game").classList.add("game-red");
+            document.querySelector("#game").classList.add("game-red");;
             resetQuestion();
           }
 
@@ -177,7 +186,7 @@ for (var i = 0; i < currentAnswer.length; i++) {
 
     document.getElementById("game").textContent = statusMsg;
     document.getElementById("answerMsg").textContent = answerMsg;
-    document.getElementById("guessesSoFar").textContent = "Guesses So Far: " + guessesSoFar;
+    document.getElementById("guessesSoFar").textContent = guessesSoFar;
     document.getElementById("guessesLeft").textContent = "Guesses Left: " + guessesLeft ;
     document.getElementById("Losses").textContent = "Losses: " + Losses ;
     document.getElementById("Wins").textContent = "Wins: " + Wins ;
