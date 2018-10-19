@@ -1,6 +1,7 @@
     
     var maxGuesses = 10;
     var guessesCount = 0;
+    var guessesWrong = 0;
     var letterGuesses = "";
     var Wins = 0;
     var Losses = 0;
@@ -15,44 +16,64 @@
     var unknownLetter = "_";
     var numTries = 1;
     var maxQuestions = 5;
+    var bWrongAnswer = false;
+    var bResetGame = false;
+    var bShowResults = false;
     
     var LettersAllowed = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"
   ]
     var Questions = {
-        "Q1": "In The Karate Kid what color did Daniel have to paint Miagi's house, as part of his training?",
+        "Q1": "Q1: In The Karate Kid what color did Daniel have to paint Miagi's house, as part of his training?",
         "A1": "Green",
-        "Q2": "Which 80’s movie was the first to become a hit largely due to MTV?",
+        "Q2": "Q2: Which 80’s movie was the first to become a hit largely due to MTV?",
         "A2": "Flashdance",
-        "Q3": "What god were the Thugees worshipping in Indiana Jones and the Temple of Doom?",
+        "Q3": "Q3: What god were the Thugees worshipping in Indiana Jones and the Temple of Doom?",
         "A3": "Kali",
-        "Q4": "In 'Dirty Dancing' what was Baby's real name?",
+        "Q4": "Q4: In 'Dirty Dancing' what was Baby's real name?",
         "A4": "Frances",
-        "Q5": "What does Ally Sheedy say she likes to drink in the Breakfast Club?",
+        "Q5": "Q5: What does Ally Sheedy say she likes to drink in the Breakfast Club?",
         "A5": "Vodka"
         }
 
+
+        function showResults(){
+          console.log("showResults");
+          if (Wins > Losses){
+            document.getElementById("game").classList.add("game-green");
+            statusMsg ="You Won the Game! Congratulations!  Press a key between A to Z to try again.";
+          }
+          else{
+            document.getElementById("game").classList.add("game-red");
+            statusMsg ="You Lost the Game.  Better luck next time. Press a key between A to Z to try again.";
+          }
+         
+          return statusMsg;
+        }
+
         function resetgame(){
-          statusMsg ="Sorry there are no more questions. Thank you for playing.  Press any key to try again."
-          resetColor();
-          resetQuestion();
-          document.getElementById("game").textContent = statusMsg;
-          document.getElementById("answerMsg").textContent = "-";
-          document.getElementById("guessesSoFar").textContent = "";
-          document.getElementById("guessesLeft").textContent = "Guesses Left: " ;
-          document.getElementById("Losses").textContent = "Losses: 0" ;
-          document.getElementById("Wins").textContent = "Wins: 0";
+
+          console.log("resetgame");
+
           Losses = 0;
           Wins = 0;
-          numTries =1;
-        }
+          numTries=1;
+          resetQuestion();
+          answerMsg = "";
+          guessesSoFar="";
+          }
 
         function resetColor(){
           document.getElementById("game").classList.remove("game-red");
           document.getElementById("game").classList.remove("game-green");
         }
+
+         
+
         
         function resetQuestion(){
+          
           guessesCount = 0;
+          guessesWrong = 0;
           letterGuesses = "";
           guessesLeft = maxGuesses;
           guessesSoFar = "";
@@ -67,7 +88,12 @@
     // This function is run whenever the user presses a key.
     document.onkeyup = function(event) {
 
-    
+     
+      if (numTries >maxQuestions && bResetGame === false){
+        bShowResults = true;
+ 
+      }
+
       
       //Sets the user's guess to upper case.
       var userGuess = event.key.toUpperCase();
@@ -77,10 +103,25 @@
     if (LettersAllowed.indexOf(userGuess)>-1)
 
     {
-   
+       
 
-     if (guessesCount === 0) {
+        if (bShowResults ===true){
+          bShowResults = false;
+          bResetGame = true;
+         statusMsg = showResults();
+         
+
+      }
+      else if (bResetGame ===true){
+        bResetGame = false;
+        resetgame();
+       }
+
+     if (guessesCount === 0 && bShowResults===false && bResetGame===false) {
       resetColor();
+              
+
+
        switch(numTries){
         case 1:
           currentQuestion = Questions.Q1;
@@ -112,6 +153,8 @@
           currentAnswer = Questions.A5.toUpperCase();
           document.querySelector(".jumbotron").classList.add("jumbotronQ5");
         break;
+       
+             
        }
 
      statusMsg = "Question: " + currentQuestion;
@@ -120,8 +163,10 @@
       }
      else if (guessesCount > 0){
         
-        guessesLeft = maxGuesses-guessesCount;
-       guessesSoFar += userGuess + " ";
+      
+      if (currentAnswer.indexOf(userGuess) === -1){
+          guessesWrong++;
+      }
           
 
           
@@ -130,6 +175,7 @@ for (var i = 0; i < currentAnswer.length; i++) {
 
                  //if found
         if (currentAnswer[i].indexOf(userGuess) === 0){
+          
             //if first letter in loop
             if (i === 0) {
               currentAnswerMaskedDisplay = currentAnswer[i];
@@ -137,10 +183,12 @@ for (var i = 0; i < currentAnswer.length; i++) {
             else{
               currentAnswerMaskedDisplay += currentAnswer[i];
             }
-        
+
+                  
           }
 
          else{
+            
             if (i === 0) {
               currentAnswerMaskedDisplay = currentAnswerMasked[i];
          
@@ -149,13 +197,18 @@ for (var i = 0; i < currentAnswer.length; i++) {
                 currentAnswerMaskedDisplay += currentAnswerMasked[i];
                
               }
-         
+             
+             
         }
 
-
-        
+       
        
       } // close for loop
+
+
+      
+      guessesLeft = maxGuesses-guessesWrong;
+      guessesSoFar += userGuess + " ";
 
       currentAnswerMasked = currentAnswerMaskedDisplay;
       
@@ -163,27 +216,40 @@ for (var i = 0; i < currentAnswer.length; i++) {
       answerMsg =  currentAnswerMasked;
       }
 
+     
+      
+
 
      guessesCount ++;
 
-            if (currentAnswer === currentAnswerMasked){
+            if (currentAnswer === currentAnswerMasked && bResetGame=== false && bShowResults === false){
             Wins ++;
             numTries ++;
-            statusMsg = "You WON that round! :) The answer was: " + currentAnswer + ". Press any key for the next question.";
+            statusMsg = "You WON that round! :) The answer was: " + currentAnswer + ". Press a key between A to Z for the next question.";
             document.querySelector("#game").classList.add("game-green");
             
             resetQuestion();     
           }
-          else if (guessesLeft === 0){
+          else if (guessesLeft === 0 && bResetGame=== false && bShowResults === false ){
             Losses ++;
             numTries ++;
-            statusMsg = "You lost that round... :( Press any key for the next question.";
+            statusMsg = "You lost that round... :( Press a key between A to Z for the next question.";
             document.querySelector("#game").classList.add("game-red");;
             resetQuestion();
           }
 
        
+         
+        
 
+       
+    
+        } 
+
+        
+     
+        console.log(numTries);
+        
     document.getElementById("game").textContent = statusMsg;
     document.getElementById("answerMsg").textContent = answerMsg;
     document.getElementById("guessesSoFar").textContent = guessesSoFar;
@@ -191,11 +257,6 @@ for (var i = 0; i < currentAnswer.length; i++) {
     document.getElementById("Losses").textContent = "Losses: " + Losses ;
     document.getElementById("Wins").textContent = "Wins: " + Wins ;
 
-         /*If the number of tries is greater than the number of questions, reset the game by 
-      executing the resetgame function*/
-      if (numTries > maxQuestions) {
-        resetgame();
-    }
     
-        } 
+
   }
